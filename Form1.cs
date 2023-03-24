@@ -61,6 +61,40 @@ namespace ReversiGame
 {
     public partial class Form1 : Form
     {
+        int[][] EvaluationValueEarly = new int[][]
+        {
+            new[] { 30,-12,  0, -1, -1,  0,-12,  30},
+            new[] {-12,-15, -3, -3, -3, -3,-15, -12},
+            new[] {  0, -3,  0, -1, -1,  0, -3,  0 },
+            new[] { -1, -3, -1, -1, -1, -1, -3, -1 },
+            new[] { -1, -3, -1, -1, -1, -1, -3, -1 },
+            new[] {  0, -3,  0, -1, -1,  0, -3,  0 },
+            new[] {-12,-15, -3, -3, -3, -3,-15, -12},
+            new[] { 30,-12,  0, -1, -1,  0,-12,  30}
+        };
+        int[][] EvaluationValueMiddle = new int[][]
+        {
+            new[] { 80,-22,  0, -1, -1,  0,-22,  80},
+            new[] {-22,-25, -3, -3, -3, -3,-25, -22},
+            new[] {  0, -3,  0, -1, -1,  0, -3,  0 },
+            new[] { -1, -3, -1, -1, -1, -1, -3, -1 },
+            new[] { -1, -3, -1, -1, -1, -1, -3, -1 },
+            new[] {  0, -3,  0, -1, -1,  0, -3,  0 },
+            new[] { 80,-22,  0, -1, -1,  0,-22,  80},
+            new[] {-22,-25, -3, -3, -3, -3,-25, -22}
+        };
+        int[][] EvaluationValueEnd = new int[][]
+        {
+            new[] { 15, -3,  1,  1,  1,  1, -3,  15},
+            new[] { -3, -3,  1,  1,  1,  1, -3,  -3},
+            new[] {  1,  1,  1,  1,  1,  1,  1,  1 },
+            new[] {  1,  1,  1,  1,  1,  1,  1,  1 },
+            new[] {  1,  1,  1,  1,  1,  1,  1,  1 },
+            new[] {  1,  1,  1,  1,  1,  1,  1,  1 },
+            new[] { -3, -3,  1,  1,  1,  1, -3,  -3},
+            new[] { 15, -3,  1,  1,  1,  1, -3,  15}
+        };
+
         /// <summary>
         /// 0 : null~~1 : black~~2 : white
         /// </summary>
@@ -137,7 +171,7 @@ namespace ReversiGame
             {
                 Lines[i] =(PictureBox)this.Controls["Line" + i.ToString()];
             }
-            
+
             OtherGUIPictures[0] = (PictureBox)this.Controls["Green"];
             OtherGUIPictures[1] = (PictureBox)this.Controls["DarkGreen"];
             MenuGame = (Label)this.Controls["MenuBtn"];
@@ -177,7 +211,12 @@ namespace ReversiGame
                     ChengeColorPieces[i][j] = 0;
                 }
             }
+            
+            
         }
+            
+            
+            
         private void FinishGame()
         {//ゲームが終了する
             ResultsBlack = ResultsWhite = 0;
@@ -242,7 +281,7 @@ namespace ReversiGame
         /// <summary>
         /// クリックした場所に駒を置けるか確認します。colorは自分自身の色
         /// </summary>
-        private void CheckPlacePiece(int x, int y, int color)
+        private void CheckPlacePiece(int x, int y, int color ,int Put = 1)
         {
             bool on = false;
             int enemycolor;
@@ -270,10 +309,10 @@ namespace ReversiGame
                                         if (ColorPieces[b][a] == color)
                                         {
                                             CanChenge = true;
-                                            DebugText.Text += "左上";
                                             for (; ; b++, a++)
                                             {
-                                                ChengeColorPieces[b][a] = color;
+                                                if(Put == 1)
+                                                    ChengeColorPieces[b][a] = color;
                                                 if (b == i && a == j)
                                                 {
                                                     break;
@@ -295,11 +334,11 @@ namespace ReversiGame
                                         
                                         if (ColorPieces[b][a] == color)
                                         {
-                                            DebugText.Text += "上";
                                             CanChenge = true;
                                             for (; ; b++)
                                             {
-                                                ChengeColorPieces[b][a] = color;
+                                                if (Put == 1)
+                                                    ChengeColorPieces[b][a] = color;
                                                 if(b == i)
                                                 {
                                                     break;
@@ -321,10 +360,10 @@ namespace ReversiGame
                                         if (ColorPieces[b][a] == color)
                                         {
                                             CanChenge = true;
-                                            DebugText.Text += "右上";
                                             for (; ; b++, a--)
                                             {
-                                                ChengeColorPieces[b][a] = color;
+                                                if (Put == 1)
+                                                    ChengeColorPieces[b][a] = color;
                                                 if (b == i && a == j)
                                                 {
                                                     break;
@@ -347,10 +386,10 @@ namespace ReversiGame
                                         if (ColorPieces[b][a] == color)
                                         {
                                             CanChenge = true;
-                                            DebugText.Text += "左";
                                             for (; ; a++)
                                             {
-                                                ChengeColorPieces[b][a] = color;
+                                                if (Put == 1)
+                                                    ChengeColorPieces[b][a] = color;
                                                 if (b == i && a == j)
                                                 {
                                                     break;
@@ -372,10 +411,10 @@ namespace ReversiGame
                                         if (ColorPieces[b][a] == color)
                                         {
                                             CanChenge = true;
-                                            DebugText.Text += "右";
                                             for (; ; a--)
                                             {
-                                                ChengeColorPieces[b][a] = color;
+                                                if (Put == 1)
+                                                    ChengeColorPieces[b][a] = color;
                                                 if (b == i && a == j)
                                                 {
                                                     break;
@@ -398,10 +437,10 @@ namespace ReversiGame
                                         if (ColorPieces[b][a] == color)
                                         {
                                             CanChenge = true;
-                                            DebugText.Text += "左下";
                                             for (; ; b--, a++)
                                             {
-                                                ChengeColorPieces[b][a] = color;
+                                                if (Put == 1)
+                                                    ChengeColorPieces[b][a] = color;
                                                 if (b == i && a == j)
                                                 {
                                                     break;
@@ -423,10 +462,10 @@ namespace ReversiGame
                                         if (ColorPieces[b][a] == color)
                                         {
                                             CanChenge = true;
-                                            DebugText.Text += "下";
                                             for (; ; b--)
                                             {
-                                                ChengeColorPieces[b][a] = color;
+                                                if (Put == 1)
+                                                    ChengeColorPieces[b][a] = color;
                                                 if (b == i && a == j)
                                                 {
                                                     break;
@@ -448,10 +487,10 @@ namespace ReversiGame
                                         if (ColorPieces[b][a] == color)
                                         {
                                             CanChenge = true;
-                                            DebugText.Text += "左下";
                                             for (; ; b--, a--)
                                             {
-                                                ChengeColorPieces[b][a] = color;
+                                                if (Put == 1)
+                                                    ChengeColorPieces[b][a] = color;
                                                 if (b == i && a == j)
                                                 {
                                                     break;
@@ -472,7 +511,8 @@ namespace ReversiGame
 
             if (CanChenge == true)
             {
-                ChengeColorPieces[y][x] = color;
+                if(Put == 1)
+                    ChengeColorPieces[y][x] = color;
             }
             
         }
@@ -616,6 +656,89 @@ namespace ReversiGame
                 await Task.Delay(audioFile.TotalTime);
             }
         }
+        int[][] COMPieces = new int[8][];
+        
+        private void CheckaPutCOM()
+        {
+            int MaxValue = -30, COMx = 0, COMy = 0;
+            for (int i = 0; i < 8; i++)
+            {
+                COMPieces[i] = new int[8];
+                for (int j = 0; j < 8; j++)
+                {
+                    COMPieces[i][j] = 0;
+                    CheckPlacePiece(j, i, 2, 0);
+
+                    if (CanChenge)
+                    {
+                        COMPieces[i][j] = 1;
+                        CanChenge = false;
+                    }
+
+                    if (COMPieces[i][j] == 1 && PlayTime < 20)
+                    {
+                        if (EvaluationValueEarly[i][j] > MaxValue)
+                        {
+                            MaxValue = EvaluationValueEarly[i][j];
+                            COMx = j;
+                            COMy = i;
+                        }
+                        else if(EvaluationValueEarly[i][j] == MaxValue)
+                        {
+                            int random = new Random().Next(0, 2);
+                            if(random == 0)
+                            {
+                                MaxValue = EvaluationValueEarly[i][j];
+                                COMx = j;
+                                COMy = i;
+                            }
+                        }
+                    }
+                    else if(COMPieces[i][j] == 1 && PlayTime < 45)
+                    {
+                        if (EvaluationValueMiddle[i][j] > MaxValue)
+                        {
+                            MaxValue = EvaluationValueMiddle[i][j];
+                            COMx = j;
+                            COMy = i;
+                        }
+                        else if (EvaluationValueMiddle[i][j] == MaxValue)
+                        {
+                            int random = new Random().Next(0, 2);
+                            if (random == 0)
+                            {
+                                MaxValue = EvaluationValueMiddle[i][j];
+                                COMx = j;
+                                COMy = i;
+                            }
+                        }
+                    }
+                    else if (COMPieces[i][j] == 1 && PlayTime < 100)
+                    {
+                        if (EvaluationValueEnd[i][j] > MaxValue)
+                        {
+                            MaxValue = EvaluationValueEnd[i][j];
+                            COMx = j;
+                            COMy = i;
+                        }
+                        else if (EvaluationValueEnd[i][j] == MaxValue)
+                        {
+                            int random = new Random().Next(0, 2);
+                            if (random == 0)
+                            {
+                                MaxValue = EvaluationValueEnd[i][j];
+                                COMx = j;
+                                COMy = i;
+                            }
+                        }
+                    }
+
+
+                }
+            }
+            CheckPlacePiece(COMx,COMy, 2);
+
+        }
 
 
         //------------------------------------------------------------------------------------------------------------------------------------------
@@ -628,7 +751,7 @@ namespace ReversiGame
         bool Animation3 = false;
         int count = 0, RandomAnimation = 0,ResultsBlack,ResultsWhite,PassCount;
         bool PlayerControl = false,COMControl = false,CanChenge = false,Pass = false;
-        int PX = -1, PY = -1;
+        int PX = -1, PY = -1,PlayTime = 0;
         private void timer1_Tick(object sender, EventArgs e)
         {//先攻後攻を決めるアニメーション
             if (Animation1)
@@ -743,7 +866,7 @@ namespace ReversiGame
                     AllCloseScene();
                     StartMenuScene();
                     Animation3 = false;
-                    count = 0;
+                    count = PlayTime = 0;
                 }
 
             }
@@ -756,8 +879,6 @@ namespace ReversiGame
                     if (Animation3 == false)
                         CheckPass(1);
                 }
-                    
-                Pass = false;
                 if ((Control.MouseButtons & MouseButtons.Left) == MouseButtons.Left && Animation2 == false)
                 {
                     CheckClick();
@@ -770,6 +891,7 @@ namespace ReversiGame
                         COMControl = true;
                         CanChenge = false;
                         Pass = true;
+                        PlayTime++;
                     }
                     
                 }
@@ -783,16 +905,11 @@ namespace ReversiGame
                 {
                     FinishGame();
                     if(Animation3 == false)
-                    CheckPass(2);
+                        CheckPass(2);
                 }
-                Pass = false;
                 for (; Animation2 != true; )
                 {
-                    
-                    int randomx = new Random().Next();
-                    int randomy = new Random().Next(0,8);
-                    CheckPlacePiece(randomx % 8, randomy, 2);
-                    DebugText.Text = randomx.ToString() + randomy;
+                    CheckaPutCOM();
                     if (CanChenge)
                     {
                         PlayAudioAsync(tantan);
@@ -801,6 +918,7 @@ namespace ReversiGame
                         COMControl = false;
                         CanChenge = false;
                         Pass = true;
+                        PlayTime++;
                         break;
                     }
                 }
